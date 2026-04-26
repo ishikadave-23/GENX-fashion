@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+{% block title %}Contact Us - GENX{% endblock %}
+
+{% block content %}
+
+<!-- Contact Hero -->
+<section class="container-fluid bg-gray-light py-5">
+    <div class="container text-center py-4">
+        <h1 class="display-5 fw-bold text-brown-dark mb-3">Get in Touch</h1>
+        <p class="lead text-brown-medium mx-auto" style="max-width: 600px;">
+            Have questions about our collection or need assistance? 
+            We're here to help with your timeless fashion journey.
+        </p>
+    </div>
+</section>
+
+<!-- Contact Content -->
+<section class="container my-5 py-5">
+    <div class="row">
+        <!-- Contact Form -->
+        <div class="col-lg-7 mb-5 mb-lg-0">
+            <h2 class="fw-bold text-brown-dark mb-4">Send us a Message</h2>
+            <form id="contactForm" class="contact-form p-4 rounded-3">
+                <!-- Success/Error Messages -->
+                <div id="successMsg" class="alert alert-success d-none"></div>
+                <div id="errorMsg" class="alert alert-danger d-none"></div>
+                
+                <div class="mb-4">
+                    <label for="name" class="form-label fw-bold text-brown-dark">Full Name</label>
+                    <input type="text" class="form-control form-control-contact" id="name" placeholder="Enter your full name" required>
+                    <div id="nameErr" class="text-brown-light small mt-1"></div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <label for="email" class="form-label fw-bold text-brown-dark">Email Address</label>
+                        <input type="email" class="form-control form-control-contact" id="email" placeholder="name@example.com" required>
+                        <div id="emailErr" class="text-brown-light small mt-1"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label fw-bold text-brown-dark">Phone Number</label>
+                        <input type="tel" class="form-control form-control-contact" id="phone" placeholder="+91 9876543210">
+                        <div id="phoneErr" class="text-brown-light small mt-1"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="subject" class="form-label fw-bold text-brown-dark">Subject</label>
+                    <select class="form-select form-control-contact" id="subject">
+                        <option selected>Select a subject</option>
+                        <option value="product">Product Inquiry</option>
+                        <option value="order">Order Support</option>
+                        <option value="return">Return & Exchange</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="message" class="form-label fw-bold text-brown-dark">Your Message</label>
+                    <textarea class="form-control form-control-contact" id="message" rows="5" placeholder="Please provide details about your inquiry..." required></textarea>
+                    <div id="messageErr" class="text-brown-light small mt-1"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-register w-100 btn-submit">
+                    Send Message
+                </button>
+            </form>
+        </div>
+        
+        <!-- Contact Information -->
+        <div class="col-lg-5">
+            <h2 class="fw-bold text-brown-dark mb-4">Contact Information</h2>
+            
+            <!-- Contact Cards -->
+            <div class="contact-info-card mb-4">
+                <div class="contact-icon">
+                    <span class="display-5">📍</span>
+                </div>
+                <div>
+                    <h5 class="fw-bold text-brown-dark">Our Location</h5>
+                    <p class="text-brown-medium mb-0">
+                        Rk University<br>
+                        Trmba Rajkot 360002<br>
+                        India
+                    </p>
+                </div>
+            </div>
+            
+            <div class="contact-info-card mb-4">
+                <div class="contact-icon">
+                    <span class="display-5">📞</span>
+                </div>
+                <div>
+                    <h5 class="fw-bold text-brown-dark">Phone & Email</h5>
+                    <p class="text-brown-medium mb-2">
+                        <strong>Phone:</strong> +91 9157838806
+                    </p>
+                    <p class="text-brown-medium mb-0">
+                        <strong>Email:</strong> idave660@rku.ac.in
+                    </p>
+                </div>
+            </div>
+            
+            <div class="contact-info-card mb-4">
+                <div class="contact-icon">
+                    <span class="display-5">🕒</span>
+                </div>
+                <div>
+                    <h5 class="fw-bold text-brown-dark">Business Hours</h5>
+                    <p class="text-brown-medium mb-0">
+                        Monday - Friday: 9:00 AM - 8:00 PM<br>
+                        Saturday - Sunday: 10:00 AM - 6:00 PM
+                    </p>
+                </div>
+            </div>
+            
+            <!-- FAQ Section -->
+            
+        </div>
+    </div>
+</section>
+
+
+<style>
+/* ================= CONTACT FORM ================= */
+.contact-form {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.contact-form:hover {
+    box-shadow: 0 12px 30px rgba(60,42,33,0.08);
+}
+
+/* ================= FORM CONTROLS ================= */
+.form-control-contact {
+    border: 1px solid var(--gray-medium);
+    border-radius: 6px;
+    padding: 12px 15px;
+    color: var(--brown-dark);
+    transition: all 0.3s ease;
+}
+
+.form-control-contact:focus {
+    border-color: var(--brown-medium);
+    box-shadow: 0 0 0 0.2rem rgba(109, 76, 65, 0.1);
+    outline: none;
+}
+
+.form-control-contact::placeholder {
+    color: var(--brown-light);
+}
+
+.form-select {
+    color: var(--brown-dark);
+    background-color: var(--white);
+}
+
+/* ================= BUTTON ================= */
+.btn-submit {
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-submit:hover {
+    background: var(--brown-medium);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(109, 76, 65, 0.2);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* ================= CONTACT INFO CARDS ================= */
+.contact-info-card {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+
+.contact-info-card:hover {
+    border-color: var(--brown-medium);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.contact-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gray-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ================= ACCORDION ================= */
+.accordion-item {
+    margin-bottom: 10px;
+}
+
+.accordion-button {
+    background: var(--white);
+    color: var(--brown-dark);
+    font-weight: 500;
+    padding: 15px 20px;
+}
+
+.accordion-button:not(.collapsed) {
+    background: var(--gray-light);
+    color: var(--brown-dark);
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: var(--brown-medium);
+}
+
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236D4C41'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.accordion-body {
+    background: var(--white);
+    color: var(--brown-medium);
+}
+
+/* ================= MAP PLACEHOLDER ================= */
+.map-placeholder {
+    border: 2px solid var(--gray-medium);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .contact-form {
+        padding: 20px !important;
+    }
+    
+    .contact-info-card {
+        padding: 15px;
+    }
+    
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .display-5 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .form-control-contact {
+        padding: 10px 12px;
+    }
+    
+    .btn-submit {
+        padding: 12px 16px;
+        font-size: 1rem;
+    }
+    
+    .accordion-button {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Initialize form validation
+    function validateForm() {
+        let isValid = true;
+        
+        // Clear previous errors
+        $('.text-brown-light').text('');
+        $('#successMsg, #errorMsg').addClass('d-none');
+        
+        // Get form values
+        const name = $('#name').val().trim();
+        const email = $('#email').val().trim();
+        const phone = $('#phone').val().trim();
+        const message = $('#message').val().trim();
+        
+        // Validate Name
+        if (!name) {
+            $('#nameErr').text('Name is required');
+            $('#name').addClass('is-invalid');
+            isValid = false;
+        } else if (!/^[a-zA-Z\s]{2,}$/.test(name)) {
+            $('#nameErr').text('Enter a valid name (minimum 2 letters)');
+            $('#name').addClass('is-invalid');
+            isValid = false;
+        } else {
+            $('#name').removeClass('is-invalid');
+        }
+        
+        // Validate Email
+        if (!email) {
+            $('#emailErr').text('Email is required');
+            $('#email').addClass('is-invalid');
+            isValid = false;
+        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+            $('#emailErr').text('Enter a valid email address');
+            $('#email').addClass('is-invalid');
+            isValid = false;
+        } else {
+            $('#email').removeClass('is-invalid');
+        }
+        
+        // Validate Phone (optional)
+        if (phone && !/^[\d\s\+\-\(\)]{10,15}$/.test(phone)) {
+            $('#phoneErr').text('Enter a valid phone number');
+            $('#phone').addClass('is-invalid');
+            isValid = false;
+        } else {
+            $('#phone').removeClass('is-invalid');
+        }
+        
+        // Validate Message
+        if (!message) {
+            $('#messageErr').text('Message is required');
+            $('#message').addClass('is-invalid');
+            isValid = false;
+        } else if (message.length < 10) {
+            $('#messageErr').text('Message must be at least 10 characters');
+            $('#message').addClass('is-invalid');
+            isValid = false;
+        } else {
+            $('#message').removeClass('is-invalid');
+        }
+        
+        return isValid;
+    }
+    
+    // Form submission handler
+    $('#contactForm').submit(function(e) {
+        e.preventDefault();
+        
+        if (validateForm()) {
+            // Show loading state
+            const submitBtn = $('.btn-submit');
+            const originalText = submitBtn.text();
+            submitBtn.text('Sending...').prop('disabled', true);
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Show success message
+                $('#successMsg')
+                    .removeClass('d-none alert-danger')
+                    .addClass('alert-success')
+                    .text('Thank you! Your message has been sent successfully. We\'ll get back to you within 24 hours.');
+                
+                // Reset form
+                $('#contactForm')[0].reset();
+                $('.is-invalid').removeClass('is-invalid');
+                
+                // Reset button
+                submitBtn.text(originalText).prop('disabled', false);
+                
+                // Scroll to success message
+                $('html, body').animate({
+                    scrollTop: $('#successMsg').offset().top - 100
+                }, 500);
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    $('#successMsg').addClass('d-none');
+                }, 5000);
+            }, 1500);
+        } else {
+            $('#errorMsg')
+                .removeClass('d-none')
+                .text('Please correct the errors in the form.');
+            
+            // Scroll to error message
+            $('html, body').animate({
+                scrollTop: $('#errorMsg').offset().top - 100
+            }, 500);
+        }
+    });
+    
+    // Real-time validation
+    $('.form-control-contact').on('input', function() {
+        const field = $(this);
+        const value = field.val().trim();
+        
+        // Remove error styling as user types
+        if (value) {
+            field.removeClass('is-invalid');
+            field.next('.text-brown-light').text('');
+        }
+    });
+    
+    // Add focus styling
+    $('.form-control-contact').focus(function() {
+        $(this).parent().addClass('focused');
+    }).blur(function() {
+        $(this).parent().removeClass('focused');
+    });
+});
+</script>
+{% endblock %}

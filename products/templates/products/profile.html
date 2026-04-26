@@ -1,0 +1,811 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Profile | GENX{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Profile Header -->
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card profile-card p-4 text-center">
+                <!-- User Avatar -->
+                <div class="user-avatar mb-3">
+                    <div class="avatar-circle">
+                        <span class="avatar-text">{{ request.user.username|first|upper }}</span>
+                    </div>
+                </div>
+                
+                <!-- User Info -->
+                <h3 class="text-brown-dark fw-bold">{{ request.user.username }}</h3>
+                <p class="text-brown-medium mb-4">{{ request.user.email }}</p>
+                
+                <!-- Account Stats -->
+                <div class="account-stats mb-4">
+                    <div class="stat-item">
+                        <h5 class="text-brown-dark fw-bold">{{ orders|length|default:"0" }}</h5>
+                        <p class="text-brown-medium small mb-0">Orders</p>
+                    </div>
+                    <div class="stat-item">
+                        <h5 class="text-brown-dark fw-bold">{{ wishlist_count|default:"0" }}</h5>
+                        <p class="text-brown-medium small mb-0">Wishlist</p>
+                    </div>
+                    <div class="stat-item">
+                        <h5 class="text-brown-dark fw-bold">{{ cart_count|default:"0" }}</h5>
+                        <p class="text-brown-medium small mb-0">Cart</p>
+                    </div>
+                </div>
+                
+                <!-- Member Since -->
+                <p class="text-brown-light small">
+                    <i class="bi bi-calendar me-1"></i>
+                    Member since {{ request.user.date_joined|date:"M Y" }}
+                </p>
+            </div>
+        </div>
+        
+        <!-- Profile Content -->
+        <div class="col-lg-8">
+            <!-- Tabs Navigation -->
+            <ul class="nav nav-tabs profile-tabs mb-4" id="profileTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button">
+                        Edit Profile
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button">
+                        Order History
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="wishlist-tab" data-bs-toggle="tab" data-bs-target="#wishlist" type="button">
+                        Wishlist
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="address-tab" data-bs-toggle="tab" data-bs-target="#address" type="button">
+                        Addresses
+                    </button>
+                </li>
+            </ul>
+            
+            <!-- Tabs Content -->
+            <div class="tab-content" id="profileTabContent">
+                
+                <!-- Edit Profile Tab -->
+                <div class="tab-pane fade show active" id="edit" role="tabpanel">
+                    <div class="card p-4">
+                        <h4 class="text-brown-dark fw-bold mb-4">Edit Profile</h4>
+                        
+                        {% if messages %}
+                        <div class="mb-4">
+                            {% for message in messages %}
+                            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <form method="POST" action="{% url 'profile' %}">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-brown-dark fw-bold">First Name</label>
+                                    <input type="text" class="form-control auth-input" name="first_name" 
+                                           value="{{ request.user.first_name }}" placeholder="Enter first name">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-brown-dark fw-bold">Last Name</label>
+                                    <input type="text" class="form-control auth-input" name="last_name" 
+                                           value="{{ request.user.last_name }}" placeholder="Enter last name">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label text-brown-dark fw-bold">Username</label>
+                                <input type="text" class="form-control auth-input" name="username" 
+                                       value="{{ request.user.username }}" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label text-brown-dark fw-bold">Email</label>
+                                <input type="email" class="form-control auth-input" name="email" 
+                                       value="{{ request.user.email }}" required>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label text-brown-dark fw-bold">Phone Number</label>
+                                <input type="tel" class="form-control auth-input" name="phone" 
+                                       value="{{ user_profile.phone|default:'' }}" placeholder="Enter phone number">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-register w-100">
+                                Save Changes
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Order History Tab -->
+                <div class="tab-pane fade" id="orders" role="tabpanel">
+                    <div class="card p-4">
+                        <h4 class="text-brown-dark fw-bold mb-4">Order History</h4>
+                        
+                        {% if orders %}
+                        <div class="orders-list">
+                            {% for order in orders %}
+                            <div class="order-card mb-3">
+                                <div class="order-header">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="text-brown-dark fw-bold mb-1">Order #{{ order.id }}</h6>
+                                            <p class="text-brown-medium small mb-0">{{ order.created_at|date:"M d, Y" }}</p>
+                                        </div>
+                                        <span class="badge order-status">{{ order.status }}</span>
+                                    </div>
+                                </div>
+                                <div class="order-body">
+                                    {% for item in order.items %}
+                                    <div class="order-item">
+                                        <div class="row align-items-center">
+                                            <div class="col-2">
+                                                <div class="order-item-img" style="background-image: url('{% static item.image %}')"></div>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6 class="text-brown-dark mb-1">{{ item.name }}</h6>
+                                                <p class="text-brown-light small mb-0">Size: {{ item.size }}, Qty: {{ item.quantity }}</p>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <p class="text-brown-dark fw-bold">₹{{ item.price }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="order-footer">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-brown-medium mb-0">{{ order.items|length }} items</p>
+                                        <p class="text-brown-dark fw-bold">Total: ₹{{ order.total }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-5">
+                            <div class="empty-state-icon mb-3">📦</div>
+                            <h5 class="text-brown-dark mb-2">No orders yet</h5>
+                            <p class="text-brown-medium">You haven't placed any orders yet.</p>
+                            <a href="{% url 'products' %}" class="btn btn-outline-brown">Start Shopping</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Wishlist Tab -->
+                <div class="tab-pane fade" id="wishlist" role="tabpanel">
+                    <div class="card p-4">
+                        <h4 class="text-brown-dark fw-bold mb-4">My Wishlist</h4>
+                        
+                        {% if wishlist_items %}
+                        <div class="row">
+                            {% for item in wishlist_items %}
+                            <div class="col-md-6 mb-3">
+                                <div class="wishlist-item">
+                                    <div class="row g-0">
+                                        <div class="col-4">
+                                            <div class="wishlist-img" style="background-image: url('{% static item.image %}')"></div>
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="p-3">
+                                                <h6 class="text-brown-dark mb-1">{{ item.name }}</h6>
+                                                <p class="text-brown-dark fw-bold mb-2">₹{{ item.price }}</p>
+                                                <div class="d-flex gap-2">
+                                                    <button class="btn btn-sm btn-register">Add to Cart</button>
+                                                    <button class="btn btn-sm btn-outline-brown remove-wishlist" data-id="{{ item.id }}">
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-5">
+                            <div class="empty-state-icon mb-3">❤️</div>
+                            <h5 class="text-brown-dark mb-2">Your wishlist is empty</h5>
+                            <p class="text-brown-medium">Save items you love for later.</p>
+                            <a href="{% url 'products' %}" class="btn btn-outline-brown">Browse Products</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Addresses Tab -->
+                <div class="tab-pane fade" id="address" role="tabpanel">
+                    <div class="card p-4">
+                        <h4 class="text-brown-dark fw-bold mb-4">Saved Addresses</h4>
+                        
+                        <div class="row">
+                            {% if addresses %}
+                            {% for address in addresses %}
+                            <div class="col-md-6 mb-3">
+                                <div class="address-card">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <h6 class="text-brown-dark fw-bold mb-0">{{ address.name }}</h6>
+                                        {% if address.default %}
+                                        <span class="badge bg-brown-dark">Default</span>
+                                        {% endif %}
+                                    </div>
+                                    <p class="text-brown-medium mb-2">{{ address.street }}</p>
+                                    <p class="text-brown-medium mb-2">{{ address.city }}, {{ address.state }} - {{ address.pincode }}</p>
+                                    <p class="text-brown-medium mb-3">{{ address.phone }}</p>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-sm btn-outline-brown">Edit</button>
+                                        {% if not address.default %}
+                                        <button class="btn btn-sm btn-outline-brown">Set Default</button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <div class="col-12">
+                                <div class="text-center py-5">
+                                    <div class="empty-state-icon mb-3">🏠</div>
+                                    <h5 class="text-brown-dark mb-2">No addresses saved</h5>
+                                    <p class="text-brown-medium">Add an address for faster checkout.</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Add New Address -->
+                            <div class="col-md-6 mb-3">
+                                <div class="address-card add-address" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                    <div class="d-flex flex-column align-items-center justify-content-center h-100">
+                                        <div class="add-icon mb-2">+</div>
+                                        <p class="text-brown-dark fw-bold mb-0">Add New Address</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Address Modal -->
+<div class="modal fade" id="addAddressModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-brown-dark fw-bold">Add New Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addressForm">
+                    <div class="mb-3">
+                        <label class="form-label text-brown-dark fw-bold">Full Name</label>
+                        <input type="text" class="form-control auth-input" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-brown-dark fw-bold">Phone Number</label>
+                        <input type="tel" class="form-control auth-input" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-brown-dark fw-bold">Street Address</label>
+                        <textarea class="form-control auth-input" rows="3" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-brown-dark fw-bold">City</label>
+                            <input type="text" class="form-control auth-input" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-brown-dark fw-bold">State</label>
+                            <input type="text" class="form-control auth-input" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-brown-dark fw-bold">Pincode</label>
+                        <input type="text" class="form-control auth-input" required>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="defaultAddress">
+                        <label class="form-check-label text-brown-medium" for="defaultAddress">
+                            Set as default address
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-brown" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-register" id="saveAddress">Save Address</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* ================= PROFILE STYLES ================= */
+.profile-card {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.avatar-circle {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--brown-dark), var(--brown-medium));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.avatar-text {
+    color: var(--white);
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.account-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
+    border-top: 1px solid var(--gray-medium);
+    border-bottom: 1px solid var(--gray-medium);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+/* ================= TABS ================= */
+.profile-tabs {
+    border-bottom: 2px solid var(--gray-medium);
+}
+
+.profile-tabs .nav-link {
+    color: var(--brown-medium);
+    font-weight: 500;
+    border: none;
+    padding: 12px 20px;
+    position: relative;
+    background: none;
+}
+
+.profile-tabs .nav-link:hover {
+    color: var(--brown-dark);
+}
+
+.profile-tabs .nav-link.active {
+    color: var(--brown-dark);
+    background: none;
+    border: none;
+}
+
+.profile-tabs .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--brown-dark);
+}
+
+/* ================= CARDS ================= */
+.tab-content .card {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+/* ================= ORDER HISTORY ================= */
+.order-card {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.order-card:hover {
+    border-color: var(--brown-medium);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.order-header {
+    padding: 15px 20px;
+    background: var(--gray-light);
+    border-bottom: 1px solid var(--gray-medium);
+}
+
+.order-body {
+    padding: 20px;
+}
+
+.order-footer {
+    padding: 15px 20px;
+    background: var(--gray-light);
+    border-top: 1px solid var(--gray-medium);
+}
+
+.order-item {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item-img {
+    width: 60px;
+    height: 60px;
+    background: var(--gray-light);
+    border-radius: 6px;
+    background-size: cover;
+    background-position: center;
+}
+
+.order-status {
+    background: var(--brown-dark);
+    color: var(--white);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+/* ================= WISHLIST ================= */
+.wishlist-item {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.wishlist-item:hover {
+    border-color: var(--brown-medium);
+    transform: translateY(-2px);
+}
+
+.wishlist-img {
+    width: 100%;
+    height: 120px;
+    background: var(--gray-light);
+    background-size: cover;
+    background-position: center;
+}
+
+/* ================= ADDRESSES ================= */
+.address-card {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    padding: 20px;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.address-card:hover {
+    border-color: var(--brown-medium);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.add-address {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: var(--gray-light);
+    border: 2px dashed var(--brown-light);
+}
+
+.add-address:hover {
+    background: var(--white);
+    border-color: var(--brown-medium);
+}
+
+.add-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--brown-dark);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+/* ================= EMPTY STATES ================= */
+.empty-state-icon {
+    font-size: 3rem;
+    opacity: 0.5;
+}
+
+/* ================= MODAL ================= */
+.modal-content {
+    border: 1px solid var(--gray-medium);
+    border-radius: 12px;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--gray-medium);
+    padding: 20px 30px;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--gray-medium);
+    padding: 20px 30px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .account-stats {
+        padding: 15px 0;
+    }
+    
+    .stat-item h5 {
+        font-size: 1.2rem;
+    }
+    
+    .profile-tabs .nav-link {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .order-item {
+        padding: 15px 0;
+    }
+    
+    .modal-body, .modal-header, .modal-footer {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .avatar-circle {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .avatar-text {
+        font-size: 2rem;
+    }
+    
+    .account-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .wishlist-img {
+        height: 100px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching
+    const tabButtons = document.querySelectorAll('.profile-tabs .nav-link');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    
+    // Remove from wishlist
+    document.querySelectorAll('.remove-wishlist').forEach(button => {
+        button.addEventListener('click', function() {
+            const itemId = this.getAttribute('data-id');
+            const itemCard = this.closest('.col-md-6');
+            
+            // Show confirmation
+            if (confirm('Remove this item from your wishlist?')) {
+                // In real app, this would be an API call
+                showToast('Item removed from wishlist');
+                
+                // Remove from UI
+                itemCard.style.opacity = '0';
+                itemCard.style.transform = 'translateX(20px)';
+                
+                setTimeout(() => {
+                    itemCard.remove();
+                    
+                    // Check if wishlist is empty
+                    if (document.querySelectorAll('.wishlist-item').length === 0) {
+                        showEmptyWishlistState();
+                    }
+                }, 300);
+            }
+        });
+    });
+    
+    // Add to cart from wishlist
+    document.querySelectorAll('.btn-register').forEach(button => {
+        if (button.textContent.includes('Add to Cart')) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const productCard = this.closest('.wishlist-item');
+                const productName = productCard.querySelector('h6').textContent;
+                
+                showToast(`Added "${productName}" to cart`);
+                
+                // Add animation
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        }
+    });
+    
+    // Save address
+    document.getElementById('saveAddress')?.addEventListener('click', function() {
+        const addressForm = document.getElementById('addressForm');
+        const formData = new FormData(addressForm);
+        let isValid = true;
+        
+        // Simple validation
+        addressForm.querySelectorAll('input[required], textarea[required]').forEach(input => {
+            if (!input.value.trim()) {
+                isValid = false;
+                input.classList.add('error');
+            } else {
+                input.classList.remove('error');
+            }
+        });
+        
+        if (isValid) {
+            // Show loading
+            this.textContent = 'Saving...';
+            this.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                showToast('Address saved successfully');
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addAddressModal'));
+                modal.hide();
+                
+                // Reset form
+                addressForm.reset();
+                
+                // Reset button
+                this.textContent = 'Save Address';
+                this.disabled = false;
+                
+                // In real app, you would update the UI with new address
+            }, 1500);
+        } else {
+            showToast('Please fill all required fields');
+        }
+    });
+    
+    // Set default address
+    document.querySelectorAll('.btn-outline-brown').forEach(button => {
+        if (button.textContent.includes('Set Default')) {
+            button.addEventListener('click', function() {
+                const addressCard = this.closest('.address-card');
+                const addressName = addressCard.querySelector('h6').textContent;
+                
+                // Remove default from all addresses
+                document.querySelectorAll('.badge.bg-brown-dark').forEach(badge => {
+                    badge.remove();
+                });
+                
+                // Add default badge to clicked address
+                addressCard.querySelector('.d-flex').innerHTML += 
+                    '<span class="badge bg-brown-dark">Default</span>';
+                
+                showToast(`Set "${addressName}" as default address`);
+            });
+        }
+    });
+    
+    // Edit address
+    document.querySelectorAll('.btn-outline-brown').forEach(button => {
+        if (button.textContent.includes('Edit')) {
+            button.addEventListener('click', function() {
+                const addressCard = this.closest('.address-card');
+                const addressName = addressCard.querySelector('h6').textContent;
+                
+                showToast(`Edit address "${addressName}" - In a real app, this would open an edit form`);
+            });
+        }
+    });
+    
+    // Helper function to show empty wishlist state
+    function showEmptyWishlistState() {
+        const wishlistTab = document.getElementById('wishlist');
+        wishlistTab.innerHTML = `
+            <div class="card p-4">
+                <h4 class="text-brown-dark fw-bold mb-4">My Wishlist</h4>
+                <div class="text-center py-5">
+                    <div class="empty-state-icon mb-3">❤️</div>
+                    <h5 class="text-brown-dark mb-2">Your wishlist is empty</h5>
+                    <p class="text-brown-medium">Save items you love for later.</p>
+                    <a href="{% url 'products' %}" class="btn btn-outline-brown">Browse Products</a>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Toast notification
+    function showToast(message) {
+        // Remove existing toast
+        document.querySelectorAll('.toast-notification').forEach(toast => toast.remove());
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--brown-dark);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            z-index: 10000;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            animation: toastSlideIn 0.3s ease, toastFadeOut 0.3s ease 2.7s forwards;
+            max-width: 300px;
+        `;
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes toastSlideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes toastFadeOut {
+                to {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        document.body.appendChild(toast);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,864 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Women Collection - GENX{% endblock %}
+
+{% block content %}
+<section class="container my-5 py-4">
+
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="text-brown-dark fw-bold mb-3">Women's Collection</h1>
+        <p class="text-brown-medium lead">Elegant styles in timeless black, white, and brown</p>
+        
+        <!-- Collection Tags -->
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+            <span class="collection-tag active">All</span>
+            <span class="collection-tag">Dresses</span>
+            <span class="collection-tag">Tops</span>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="row g-4">
+        {% for i in "123456789012345"|make_list %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="card women-card h-100">
+                
+                <!-- Product Badge -->
+                {% if forloop.counter <= 5 %}
+                <div class="product-badge bg-brown-dark">
+                    New Arrival
+                </div>
+                {% endif %}
+                
+                {% if forloop.counter >= 15 %}
+                <div class="product-badge bg-black">
+                    Best Seller
+                </div>
+                {% endif %}
+                
+                {% if forloop.counter == 8 or forloop.counter == 12 %}
+                <div class="product-badge bg-brown-medium">
+                    Limited Edition
+                </div>
+                {% endif %}
+
+                <!-- Product Image -->
+                <div class="img-box">
+                    <img src="{% static 'products/images/girl' %}{{ forloop.counter }}.png"
+                         class="card-img-top"
+                         alt="Women's Product {{ forloop.counter }}">
+                </div>
+
+                <!-- Product Info -->
+                <div class="card-body text-center p-4">
+                    <h5 class="card-title product-title">Elegant Women's Wear {{ forloop.counter }}</h5>
+                    <p class="text-brown-medium mb-2 small">Premium fabric & craftsmanship</p>
+                    
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <span class="price me-2">₹{{ 1999|add:forloop.counter|add:150 }}</span>
+                        {% if forloop.counter >= 15 %}
+                        <span class="text-brown-light text-decoration-line-through small">₹{{ 2499|add:forloop.counter|add:150 }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Rating -->
+                    <div class="rating mb-3">
+                        <span class="text-warning">★★★★☆</span>
+                        <small class="text-brown-medium ms-1">({{ forloop.counter|add:4 }})</small>
+                    </div>
+                    
+                    <!-- Size Options -->
+                    <div class="size-options mb-3">
+                        <small class="text-brown-medium me-2">Sizes:</small>
+                        {% for size in "SML"|make_list %}
+                        <span class="size-option">{{ size }}</span>
+                        {% endfor %}
+                        <span class="size-option">XL</span>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2">
+                        <a href="#" class="btn btn-outline-brown quick-view-btn">
+                            Quick View
+                        </a>
+                        <a href="#" class="btn btn-register add-to-cart-btn">
+                            <span class="btn-text">Add to Cart</span>
+                            <span class="btn-icon">🛒</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- View All -->
+    <div class="text-center mt-5">
+        <a href="{% url 'products' %}" class="btn btn-view-all">
+            View All Collections →
+        </a>
+    </div>
+
+</section>
+
+<!-- Women's Fashion Tip -->
+<section class="container-fluid bg-gray-light py-5 my-5">
+    <div class="container text-center">
+        <h3 class="text-brown-dark fw-bold mb-4">Styling Tips</h3>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="tip-card p-4 h-100">
+                    <div class="tip-icon mb-3">👗</div>
+                    <h5 class="text-brown-dark fw-bold">Monochromatic Elegance</h5>
+                    <p class="text-brown-medium">Layer different shades of black, white, and brown for a sophisticated look</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="tip-card p-4 h-100">
+                    <div class="tip-icon mb-3">👠</div>
+                    <h5 class="text-brown-dark fw-bold">Accessorize Smartly</h5>
+                    <p class="text-brown-medium">Brown leather accessories complement our palette perfectly</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="tip-card p-4 h-100">
+                    <div class="tip-icon mb-3">🧥</div>
+                    <h5 class="text-brown-dark fw-bold">Seasonal Versatility</h5>
+                    <p class="text-brown-medium">Our colors work beautifully in every season and occasion</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* ================= PAGE HEADER ================= */
+.women-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+}
+
+.women-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--brown-dark);
+}
+
+/* ================= COLLECTION TAGS ================= */
+.collection-tag {
+    padding: 8px 20px;
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 20px;
+    color: var(--brown-medium);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.collection-tag:hover {
+    background: var(--gray-light);
+    border-color: var(--brown-medium);
+    color: var(--brown-dark);
+}
+
+.collection-tag.active {
+    background: var(--brown-dark);
+    border-color: var(--brown-dark);
+    color: var(--white);
+}
+
+/* ================= CARD STYLING ================= */
+.women-card {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    height: 100%;
+}
+
+.women-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(60,42,33,0.1);
+    border-color: var(--brown-medium);
+}
+
+/* ================= PRODUCT BADGE ================= */
+.product-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--white);
+    z-index: 2;
+}
+
+/* ================= IMAGE BOX ================= */
+.img-box {
+    height: 250px;
+    background: var(--gray-light);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.women-card:hover .img-box img {
+    transform: scale(1.05);
+}
+
+/* ================= CARD BODY ================= */
+.card-body {
+    padding: 20px !important;
+}
+
+.product-title {
+    color: var(--black);
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    min-height: 40px;
+}
+
+.price {
+    color: var(--brown-dark);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* ================= RATING ================= */
+.rating {
+    font-size: 0.9rem;
+}
+
+/* ================= SIZE OPTIONS ================= */
+.size-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.size-option {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--gray-medium);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--brown-medium);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.size-option:hover {
+    border-color: var(--brown-medium);
+    background: var(--gray-light);
+}
+
+.size-option.active {
+    border-color: var(--brown-dark);
+    background: var(--brown-dark);
+    color: var(--white);
+}
+
+/* ================= BUTTONS ================= */
+.btn-outline-brown {
+    border: 1px solid var(--brown-medium);
+    color: var(--brown-medium);
+    background: transparent;
+    padding: 8px 16px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-brown:hover {
+    background: var(--brown-medium);
+    color: var(--white);
+    border-color: var(--brown-medium);
+}
+
+.btn-register {
+    padding: 8px 16px;
+    font-weight: 500;
+    border-radius: 4px;
+    background: var(--brown-dark);
+    color: var(--white);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-register:hover {
+    background: var(--brown-medium);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-icon {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.add-to-cart-btn:hover .btn-icon {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.add-to-cart-btn:hover .btn-text {
+    transform: translateX(-5px);
+}
+
+/* ================= VIEW ALL BUTTON ================= */
+.btn-view-all {
+    padding: 12px 40px;
+    background: transparent;
+    border: 2px solid var(--brown-dark);
+    color: var(--brown-dark);
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-view-all:hover {
+    background: var(--brown-dark);
+    color: var(--white);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* ================= TIP CARDS ================= */
+.tip-card {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--brown-medium);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.tip-icon {
+    font-size: 2.5rem;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 992px) {
+    .col-lg-3 {
+        width: 50%;
+    }
+    
+    .women-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .img-box {
+        height: 220px;
+        padding: 15px;
+    }
+    
+    .collection-tag {
+        padding: 6px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .product-title {
+        font-size: 0.95rem;
+        min-height: 35px;
+    }
+    
+    .price {
+        font-size: 1.1rem;
+    }
+    
+    .btn-view-all {
+        padding: 10px 30px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .col-md-4, .col-sm-6 {
+        width: 100%;
+    }
+    
+    .img-box {
+        height: 200px;
+    }
+    
+    .tip-card {
+        padding: 20px;
+    }
+    
+    .tip-icon {
+        font-size: 2rem;
+    }
+    
+    .size-option {
+        width: 25px;
+        height: 25px;
+        font-size: 0.7rem;
+    }
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.women-card {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+}
+
+.women-card:nth-child(1) { animation-delay: 0.1s; }
+.women-card:nth-child(2) { animation-delay: 0.2s; }
+.women-card:nth-child(3) { animation-delay: 0.3s; }
+.women-card:nth-child(4) { animation-delay: 0.4s; }
+.women-card:nth-child(5) { animation-delay: 0.5s; }
+.women-card:nth-child(6) { animation-delay: 0.6s; }
+</style>
+
+<script>
+// Collection tag filtering
+document.querySelectorAll('.collection-tag').forEach(tag => {
+    tag.addEventListener('click', function() {
+        // Remove active class from all tags
+        document.querySelectorAll('.collection-tag').forEach(t => {
+            t.classList.remove('active');
+        });
+        
+        // Add active class to clicked tag
+        this.classList.add('active');
+        
+        // Filter products (simulated)
+        const category = this.textContent.trim();
+        console.log(`Filtering women's collection by: ${category}`);
+        
+        // Show feedback
+        showToast(`Showing ${category} collection`);
+    });
+});
+
+// Size selection
+document.querySelectorAll('.size-option').forEach(size => {
+    size.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent event bubbling
+        
+        // Remove active class from all sizes in same card
+        const card = this.closest('.women-card');
+        card.querySelectorAll('.size-option').forEach(s => {
+            s.classList.remove('active');
+        });
+        
+        // Add active class to clicked size
+        this.classList.add('active');
+        
+        // Show feedback
+        const productTitle = card.querySelector('.product-title').textContent;
+        showToast(`Selected size for "${productTitle}"`);
+    });
+});
+
+// Quick view functionality
+document.querySelectorAll('.quick-view-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get product details
+        const card = this.closest('.women-card');
+        const title = card.querySelector('.product-title').textContent;
+        const price = card.querySelector('.price').textContent;
+        const imageSrc = card.querySelector('img').src;
+        
+        // Remove existing modal
+        document.querySelectorAll('.quick-view-modal').forEach(m => m.remove());
+        
+        // Create quick view modal
+        const modalHTML = `
+            <div class="quick-view-modal">
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <button class="modal-close">&times;</button>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="modal-image">
+                                    <img src="${imageSrc}" alt="${title}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="text-brown-dark">${title}</h3>
+                                <p class="modal-price text-brown-dark fw-bold fs-4">${price}</p>
+                                <p class="text-brown-medium">Premium quality women's wear in classic black, white, and brown palette. Perfect for any occasion.</p>
+                                
+                                <div class="size-selection mt-4">
+                                    <label class="text-brown-dark fw-bold mb-2 d-block">Select Size:</label>
+                                    <div class="d-flex gap-2">
+                                        ${['S', 'M', 'L', 'XL'].map(size => 
+                                            `<button type="button" class="modal-size-btn btn btn-outline-brown">${size}</button>`
+                                        ).join('')}
+                                    </div>
+                                    <div class="mt-2" id="selectedSizeText"></div>
+                                </div>
+                                
+                                <div class="quantity-selection mt-4">
+                                    <label class="text-brown-dark fw-bold mb-2 d-block">Quantity:</label>
+                                    <div class="d-flex align-items-center" style="max-width: 150px;">
+                                        <button type="button" class="btn btn-outline-brown quantity-minus">-</button>
+                                        <input type="number" class="form-control text-center mx-2" value="1" min="1" max="10" id="quantityInput">
+                                        <button type="button" class="btn btn-outline-brown quantity-plus">+</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-5">
+                                    <button class="btn btn-register w-100 py-3">
+                                        <span class="me-2">Add to Cart</span>
+                                        <span>🛒</span>
+                                    </button>
+                                    <button class="btn btn-outline-brown w-100 mt-3 py-3">
+                                        Add to Wishlist
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add modal to page
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        // Prevent body scrolling when modal is open
+        document.body.style.overflow = 'hidden';
+        
+        // Initialize modal functionality
+        initializeModal();
+    });
+});
+
+// Initialize modal functionality
+function initializeModal() {
+    const modal = document.querySelector('.quick-view-modal');
+    if (!modal) return;
+    
+    // Close modal functionality
+    const closeBtn = modal.querySelector('.modal-close');
+    const overlay = modal.querySelector('.modal-overlay');
+    
+    // Close button click
+    closeBtn.addEventListener('click', () => {
+        closeModal();
+    });
+    
+    // Overlay click
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeModal();
+        }
+    });
+    
+    // Escape key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal) {
+            closeModal();
+        }
+    });
+    
+    // Size selection in modal
+    modal.querySelectorAll('.modal-size-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all size buttons
+            modal.querySelectorAll('.modal-size-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Show selected size
+            const selectedSizeText = modal.querySelector('#selectedSizeText');
+            selectedSizeText.innerHTML = `<span class="text-brown-dark">Selected: <strong>${this.textContent}</strong></span>`;
+        });
+    });
+    
+    // Quantity controls
+    const quantityInput = modal.querySelector('#quantityInput');
+    const minusBtn = modal.querySelector('.quantity-minus');
+    const plusBtn = modal.querySelector('.quantity-plus');
+    
+    minusBtn.addEventListener('click', () => {
+        let value = parseInt(quantityInput.value);
+        if (value > 1) {
+            quantityInput.value = value - 1;
+        }
+    });
+    
+    plusBtn.addEventListener('click', () => {
+        let value = parseInt(quantityInput.value);
+        if (value < 10) {
+            quantityInput.value = value + 1;
+        }
+    });
+    
+    // Quantity input validation
+    quantityInput.addEventListener('change', () => {
+        let value = parseInt(quantityInput.value);
+        if (isNaN(value) || value < 1) quantityInput.value = 1;
+        if (value > 10) quantityInput.value = 10;
+    });
+    
+    // Add to cart in modal
+    const addToCartBtn = modal.querySelector('.btn-register');
+    addToCartBtn.addEventListener('click', function() {
+        const title = modal.querySelector('h3').textContent;
+        const price = modal.querySelector('.modal-price').textContent;
+        const selectedSizeBtn = modal.querySelector('.modal-size-btn.active');
+        const size = selectedSizeBtn ? selectedSizeBtn.textContent : 'Not selected';
+        const quantity = quantityInput.value;
+        
+        showToast(`Added ${quantity}x ${title} (Size: ${size}) to cart - ${price}`);
+        closeModal();
+    });
+}
+
+// Close modal function
+function closeModal() {
+    const modal = document.querySelector('.quick-view-modal');
+    if (modal) {
+        modal.style.opacity = '0';
+        modal.style.transform = 'scale(0.9)';
+        
+        setTimeout(() => {
+            modal.remove();
+            // Restore body scrolling
+            document.body.style.overflow = '';
+        }, 300);
+    }
+}
+
+// Add to cart functionality on main page
+document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const card = this.closest('.women-card');
+        const title = card.querySelector('.product-title').textContent;
+        const selectedSize = card.querySelector('.size-option.active');
+        const size = selectedSize ? selectedSize.textContent : 'Size not selected';
+        
+        // Show notification
+        showToast(`Added "${title}" (${size}) to cart`);
+        
+        // Add animation to button
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 150);
+    });
+});
+
+// Toast notification
+function showToast(message) {
+    // Remove existing toast
+    document.querySelectorAll('.toast-notification').forEach(toast => toast.remove());
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.remove();
+        }
+    }, 3000);
+}
+
+// Add CSS for modal and toast
+const style = document.createElement('style');
+style.textContent = `
+    .quick-view-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .modal-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(2px);
+    }
+    
+    .modal-content {
+        position: relative;
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        max-width: 900px;
+        width: 95%;
+        max-height: 85vh;
+        overflow-y: auto;
+        z-index: 10000;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        border: 1px solid var(--gray-medium);
+    }
+    
+    .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--brown-dark);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10001;
+    }
+    
+    .modal-close:hover {
+        background: var(--brown-medium);
+        transform: rotate(90deg);
+    }
+    
+    .modal-image {
+        height: 350px;
+        background: var(--gray-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .modal-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .modal-size-btn.active {
+        background: var(--brown-dark);
+        color: white;
+        border-color: var(--brown-dark);
+    }
+    
+    #quantityInput {
+        max-width: 70px;
+        border-color: var(--brown-medium);
+    }
+    
+    .toast-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--brown-dark);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 4px;
+        z-index: 10000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: toastSlideIn 0.3s ease, toastFadeOut 0.3s ease 2.7s forwards;
+        max-width: 300px;
+    }
+    
+    @keyframes toastSlideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes toastFadeOut {
+        to {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .modal-content {
+            padding: 20px;
+            max-height: 90vh;
+        }
+        
+        .modal-image {
+            height: 250px;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

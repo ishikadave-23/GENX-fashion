@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - GENX{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO BANNER ================= -->
+<section class="hero-section text-center">
+    <div class="hero-overlay">
+        <div class="container hero-content">
+            <h1 class="display-4 fw-bold">Welcome to GENX</h1>
+            <p class="lead mb-4">
+                Timeless fashion in classic Style Shop Now!!
+            </p>
+            <a href="{% url 'products' %}" class="btn btn-hero btn-lg mb-4">
+                Shop Collection
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEATURED PRODUCTS ================= -->
+<section id="products" class="container my-5 py-4">
+    <h2 class="mb-5 text-center text-brown-dark">
+        Featured Collection For Women
+    </h2>
+
+    <div class="row g-4">
+        {% for i in "1234" %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="card product-card h-100">
+                <div class="product-img">
+                    <img src="{% static 'products/images/img'|add:i|add:'.png' %}" class="card-img-top" alt="Product {{ i }}">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title product-title">Classic Style {{ i }}</h5>
+                    <p class="card-text product-description">Premium quality fabric</p>
+                    <p class="price">₹{{ 1999|add:forloop.counter|add:500 }}</p>
+                    <a href="#" class="btn btn-register w-100">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<section id="products" class="container my-5 py-4">
+    <h2 class="mb-5 text-center text-brown-dark">
+        Featured Collection For Men
+    </h2>
+
+    <div class="row g-4">
+        {% for i in "1234" %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="card product-card h-100">
+                <div class="product-img">
+                    <img src="{% static 'products/images/m'|add:i|add:'.png' %}" class="card-img-top" alt="Product {{ i }}">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title product-title">Classic Style {{ i }}</h5>
+                    <p class="card-text product-description">Premium quality fabric</p>
+                    <p class="price">₹{{ 1999|add:forloop.counter|add:500 }}</p>
+                    <a href="#" class="btn btn-register w-100">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ================= REVIEWS ================= -->
+<section class="container my-5 py-4 bg-gray-light rounded-3">
+    <h2 class="text-center mb-5 text-brown-dark">
+        Customer Reviews
+    </h2>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card p-4 h-100 border-0 shadow-sm">
+                <div class="mb-3">
+                    <span class="text-warning">★★★★★</span>
+                </div>
+                <p class="mb-4">"GENX has the best quality clothes. The classic colors are exactly what I was looking for."</p>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="bg-brown-light rounded-circle" style="width: 40px; height: 40px;"></div>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0">Rahul Sharma</h6>
+                        <small class="text-brown-medium">Verified Buyer</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 h-100 border-0 shadow-sm">
+                <div class="mb-3">
+                    <span class="text-warning">★★★★★</span>
+                </div>
+                <p class="mb-4">"Loved the timeless styles and colors. Perfect for any occasion and season."</p>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="bg-brown-light rounded-circle" style="width: 40px; height: 40px;"></div>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0">Aditi Patel</h6>
+                        <small class="text-brown-medium">Verified Buyer</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 h-100 border-0 shadow-sm">
+                <div class="mb-3">
+                    <span class="text-warning">★★★★☆</span>
+                </div>
+                <p class="mb-4">"Perfect fashion store for everyone. Minimalist designs with premium quality."</p>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="bg-brown-light rounded-circle" style="width: 40px; height: 40px;"></div>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0">Kunal Mehta</h6>
+                        <small class="text-brown-medium">Regular Customer</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= ABOUT SECTION ================= -->
+<section class="container my-5 py-4">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h2 class="text-brown-dark mb-4">Our Philosophy</h2>
+            <p class="lead text-brown-medium mb-4">
+                At GENX, we believe in timeless fashion that transcends trends. 
+                Our black, white, and brown collection offers versatile pieces 
+                that blend seamlessly into any wardrobe.
+            </p>
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <span class="text-brown-dark fw-bold">✓</span>
+                    <span class="ms-2">Premium quality fabrics</span>
+                </li>
+                <li class="mb-3">
+                    <span class="text-brown-dark fw-bold">✓</span>
+                    <span class="ms-2">Ethical manufacturing</span>
+                </li>
+                <li class="mb-3">
+                    <span class="text-brown-dark fw-bold">✓</span>
+                    <span class="ms-2">Timeless color palette</span>
+                </li>
+                <li class="mb-3">
+                    <span class="text-brown-dark fw-bold">✓</span>
+                    <span class="ms-2">Sustainable packaging</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <div class="detail-img rounded-3">
+                <!-- Placeholder for about image -->
+                <div class="d-flex align-items-center justify-content-center h-100">
+                    <div class="text-center">
+                        <div class="display-1 text-brown-light mb-3">GENX</div>
+                        <p class="text-brown-medium">Timeless Fashion</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= STYLE ================= -->
+<style>
+/* ================= HERO ================= */
+.hero-section {
+    position: relative;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(60,42,33,0.8)), 
+                url("{% static 'products/images/main.png' %}") no-repeat center center/cover;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 40px;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-section p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-hero {
+    padding: 12px 40px;
+    border-radius: 4px;
+    background-color: var(--brown-dark);
+    border: none;
+    color: var(--white);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(60,42,33,0.3);
+}
+
+.btn-hero:hover {
+    background-color: var(--black);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(60,42,33,0.4);
+}
+
+/* ================= PRODUCTS SECTION ================= */
+#products {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+#products h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+}
+
+#products h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--brown-dark);
+}
+
+/* ================= REVIEWS SECTION ================= */
+.bg-gray-light {
+    background-color: var(--gray-light);
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.review-card {
+    height: 100%;
+    background: var(--white);
+    transition: all 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* ================= ABOUT SECTION ================= */
+.detail-img {
+    height: 350px;
+    background: linear-gradient(45deg, var(--gray-light), var(--white));
+    border: 1px solid var(--gray-medium);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .hero-section {
+        height: 400px;
+    }
+    
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-section p {
+        font-size: 1.1rem;
+    }
+    
+    .hero-content {
+        padding: 20px;
+    }
+    
+    #products h2 {
+        font-size: 2rem;
+    }
+    
+    .bg-gray-light {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        height: 350px;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-section p {
+        font-size: 1rem;
+    }
+    
+    .btn-hero {
+        padding: 10px 30px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ================= ADDITIONAL UTILITIES ================= */
+.text-brown-dark {
+    color: var(--brown-dark) !important;
+}
+
+.text-brown-medium {
+    color: var(--brown-medium) !important;
+}
+
+.text-brown-light {
+    color: var(--brown-light) !important;
+}
+
+.bg-brown-light {
+    background-color: var(--brown-light);
+}
+
+.rounded-3 {
+    border-radius: 10px !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+}
+</style>
+
+{% endblock %}
